@@ -90,7 +90,7 @@ games['mnist256'] = mnist256
 
 # > CIFAR10 [32x32] data set
 cifar10 = classify._replace(\
-  env_name='Classify_cifar10', input_size=1024, i_act=np.full(1024,1))
+  env_name='Classify_cifar10', input_size=256, i_act=np.full(256,1))
 L = [list(range(1, cifar10.input_size)),\
      list(range(0, cifar10.output_size))]
 label = [item for sublist in L for item in sublist]

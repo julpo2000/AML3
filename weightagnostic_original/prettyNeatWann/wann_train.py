@@ -5,6 +5,7 @@ import math
 import argparse
 import subprocess
 import numpy as np
+# import tensorflow as tf
 np.set_printoptions(precision=2, linewidth=160) 
 
 # MPI
@@ -21,6 +22,9 @@ from domain import *   # Task environments
 def master(): 
   """Main NEAT optimization script
   """
+
+  # tf.keras.datasets.cifar10.load_data()
+
   global fileName, hyp
   data = WannDataGatherer(fileName, hyp)
   alg  = Wann(hyp)

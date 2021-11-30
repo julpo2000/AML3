@@ -8,6 +8,7 @@ import sys
 import cv2
 import math
 import tensorflow as tf
+from skimage import color
 
 class ClassifyEnv(gym.Env):
   """Classification as an unsupervised OpenAI Gym RL problem.
@@ -124,14 +125,18 @@ def mnist_256():
 
 def cifar10():
   ''' 
-  Converts 28x28 mnist digits to [16x16] 
-  [samples x pixels]  ([N X 256])
+  Converts 32x32 cifar10 to [32x32] 
+  [samples x pixels]  ([N X 1024])
   '''  
-  z = (tf.keras.datasets.cifar10.load_data()/255)
-  z = preprocess(z,(16,16))
+  (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+ 
+  x_train = x_train[:,:,:,0]
+  x_train = (x_train/255)
+  x_train = preprocess(x_train,(16,16))
 
-  z = z.reshape(-1, (256))
-  return z, cifar10.train_labels()
+  x_train = x_train.reshape(-1, (256))
+  print(y_train)
+  return x_train, y_train
 
 
 def preprocess(img,size, patchCorner=(0,0), patchDim=None, unskew=True):

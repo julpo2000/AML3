@@ -46,6 +46,9 @@ which is the same as the default hyperparameter:
 python wann_train.py -p p/laptop_swing.json -n 8
 ```
 
+python3 wann_train.py -p p/cifar10.json -n 1
+
+
 Where `8` is the number of workers you have on your computer, and `p/laptop_swing.json` contains hyperparameters.
 
 Evaluation of the population is embarrassingly parallel so every extra core you have will really speed things up. Here is an example training curve on cart-pole with a population of 64 on an 8 core laptop:
