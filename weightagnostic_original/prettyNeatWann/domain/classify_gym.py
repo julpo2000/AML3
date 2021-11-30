@@ -106,21 +106,38 @@ def mnist_784():
   '''  
   import mnist
   z = (mnist.train_images()/255)
-  z = preprocess(z,(28,28))
-  z = z.reshape(-1, (784))
-  return z, mnist.train_labels()
+  z = preprocess(z,(16,16))
+
+  z = z.reshape(-1, (256))
+
+  X_train = z
+  Y_train = mnist.train_labels()
+  #train_filter = np.where((Y_train == 0 ) | (Y_train == 1) | (Y_train == 2) | (Y_train == 3) | (Y_train == 4))
+  train_filter = np.where((Y_train == 5 ) | (Y_train == 6) | (Y_train == 7) | (Y_train == 8) | (Y_train == 9))
+  X_train, Y_train = X_train[train_filter], Y_train[train_filter]
+  Y_train += 1
+  Y_train %= 5
+  return X_train, Y_train
 
 def mnist_256():
   ''' 
   Converts 28x28 mnist digits to [16x16] 
   [samples x pixels]  ([N X 256])
   '''  
+  
   import mnist
   z = (mnist.train_images()/255)
   z = preprocess(z,(16,16))
 
   z = z.reshape(-1, (256))
-  return z, mnist.train_labels()
+
+  X_train = z
+  Y_train = mnist.train_labels()
+  train_filter = np.where((Y_train == 0 ) | (Y_train == 1) | (Y_train == 2) | (Y_train == 3) | (Y_train == 4))
+  #train_filter = np.where((Y_train == 5 ) | (Y_train == 6) | (Y_train == 7) | (Y_train == 8) | (Y_train == 9))
+  X_train, Y_train = X_train[train_filter], Y_train[train_filter]
+  
+  return X_train, Y_train
 
 def cifar10():
   ''' 

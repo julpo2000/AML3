@@ -50,7 +50,7 @@ games['vae_racing'] = vae_racing
 classify = Game(env_name='Classify_digits',
   actionSelect='softmax', # all, soft, hard
   input_size=64,
-  output_size=10,
+  output_size=5, #10
   time_factor=0,
   layers=[128,9],
   i_act=np.full(64,1),
@@ -71,7 +71,7 @@ games['digits'] = classify
 
 # > MNIST [28x28] data set
 mnist784 = classify._replace(\
-  env_name='Classify_mnist784', input_size=784, i_act=np.full(784,1))
+  env_name='Classify_mnist784', input_size=256, i_act=np.full(256,1)) #input_size=784, i_act=np.full(784,1))
 L = [list(range(1, mnist784.input_size)),\
      list(range(0, mnist784.output_size))]
 label = [item for sublist in L for item in sublist]
