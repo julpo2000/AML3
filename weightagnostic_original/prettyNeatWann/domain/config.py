@@ -98,6 +98,40 @@ cifar10 = cifar10._replace(in_out_labels=label)
 games['cifar10'] = cifar10
 
 
+# -- Regression added for AML3 ------------------------------------------------ -- #
+
+# sine wave
+regression = Game(env_name='Regression_sine',
+  actionSelect='all', # all, soft, hard
+  input_size=1,
+  output_size=1,
+  time_factor=0,
+  layers=[10,10],
+  i_act=np.full(1,1),
+  h_act=[1,3,4,5,6,7,8,9,10],
+  o_act=np.full(1,1),
+  weightCap = 2.0,
+  noise_bias=0.0,
+  output_noise=[False, False, False],
+  max_episode_length = 0,
+  in_out_labels = ['x', 'y']
+)
+L = [list(range(1, regression.input_size)),\
+     list(range(0, regression.output_size))]
+label = [item for sublist in L for item in sublist]
+regression = regression._replace(in_out_labels=label)
+games['sine'] = regression
+
+# addition
+addition = regression._replace(\
+  env_name='Regression_addition', input_size=2, i_act=np.full(2,1))
+L = [list(range(1, addition.input_size)),\
+     list(range(0, addition.output_size))]
+label = [item for sublist in L for item in sublist]
+addition = addition._replace(in_out_labels=label)
+games['addition'] = addition
+
+
 # -- Cart-pole Swingup --------------------------------------------------- -- #
 
 # > Slower reaction speed

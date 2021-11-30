@@ -66,6 +66,12 @@ class ClassifyEnv(gym.Env):
     y = self.target[self.currIndx]
     m = y.shape[0]
 
+    # print("action:")
+    # print(action)
+
+    # print("y:")
+    # print(y)
+
     log_likelihood = -np.log(action[range(m),y])
     loss = np.sum(log_likelihood) / m
     reward = -loss
@@ -98,6 +104,7 @@ def digit_raw():
   digits = datasets.load_digits()
   z = (digits.images/16)
   z = z.reshape(-1, (64))
+  pritn(digits.target)
   return z, digits.target
 
 def mnist_784():
@@ -121,6 +128,7 @@ def mnist_256():
   z = preprocess(z,(16,16))
 
   z = z.reshape(-1, (256))
+  print(mnist.train_labels())
   return z, mnist.train_labels()
 
 def cifar10():
@@ -135,7 +143,7 @@ def cifar10():
   x_train = preprocess(x_train,(16,16))
 
   x_train = x_train.reshape(-1, (256))
-  print(y_train)
+  y_train = np.reshape(y_train, (len(y_train)))
   return x_train, y_train
 
 

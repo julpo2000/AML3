@@ -43,8 +43,22 @@ def make_env(env_name, seed=-1, render_mode=False):
     if env_name.endswith("cifar10"):
       from domain.classify_gym import cifar10
       trainSet, target  = cifar10()
-
+    print(env_name)
     env = ClassifyEnv(trainSet,target)  
+
+    # -- Regression added for AML3 --------------------------------------- -- #
+  elif (env_name.startswith("Regression")):
+    from domain.regression_gym import RegressionEnv
+    if env_name.endswith("sine"):
+      from domain.regression_gym import sine
+      trainSet, target  = sine()
+
+    if env_name.endswith("addition"):
+      from domain.regression_gym import addition
+      trainSet, target  = addition()
+
+    print(env_name)
+    env = RegressionEnv(trainSet,target) 
 
 
   # -- Cart Pole Swing up -------------------------------------------- -- #
