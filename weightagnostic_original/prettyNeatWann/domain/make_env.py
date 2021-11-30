@@ -40,6 +40,10 @@ def make_env(env_name, seed=-1, render_mode=False):
       from domain.classify_gym import mnist_256
       trainSet, target  = mnist_256()
 
+    if env_name.endswith("cifar10"):
+      from domain.classify_gym import cifar10
+      trainSet, target  = cifar10()
+
     env = ClassifyEnv(trainSet,target)  
 
 
