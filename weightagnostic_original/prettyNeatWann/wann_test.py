@@ -14,6 +14,9 @@ np.set_printoptions(linewidth=160)
 from neat_src import * # NEAT and WANNs
 from domain import *   # Task environments
 
+# custom
+import domain.custom
+
 def main(argv):
   infile  = args.infile
   outPref = args.outPref
@@ -23,6 +26,8 @@ def main(argv):
   nRep    = args.nReps
   view    = args.view
   seed    = args.seed
+  domain.custom.normal_pendulum = args.normal_pendulum
+
 
   # Load task and parameters
   hyp = loadHyp(pFileName=hyp_default)
@@ -81,6 +86,9 @@ if __name__ == "__main__":
 
   parser.add_argument('-s', '--seed', type=int,\
    help='random seed', default=-1)
+
+  parser.add_argument('-l', '--normal_pendulum', type=float,\
+   help='Normal pendulum weight', default=0.5)
 
   args = parser.parse_args()
   main(args)                             

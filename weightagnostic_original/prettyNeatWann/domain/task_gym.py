@@ -4,6 +4,9 @@ import sys
 from domain.make_env import make_env
 from neat_src import *
 
+# custom
+import domain.custom
+
 
 class GymTask():
   """Problem domain to be solved by neural network. Uses OpenAI Gym patterns.
@@ -85,6 +88,12 @@ class GymTask():
       self.env.seed(seed)
 
     state = self.env.reset()
+
+    if domain.custom.is_fewshot:
+      self.env.m_p = np.random.uniform(domain.custom.min_pendulum, domain.custom.max_pendulum)
+    else:
+      self.env.m_p = domain.custom.normal_pendulum
+
     self.env.t = 0
     annOut = act(wVec, aVec, self.nInput, self.nOutput, state)  
     action = selectAct(annOut,self.actSelect)    

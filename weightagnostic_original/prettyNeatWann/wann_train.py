@@ -17,6 +17,9 @@ rank = comm.Get_rank()
 from neat_src import * # NEAT and WANNs
 from domain import *   # Task environments
 
+# custom
+import domain.custom
+
 
 # -- Run NEAT ------------------------------------------------------------ -- #
 def master(): 
@@ -28,6 +31,7 @@ def master():
   global fileName, hyp
   data = WannDataGatherer(fileName, hyp)
   alg  = Wann(hyp)
+
 
   for gen in range(hyp['maxGen']):        
     pop = alg.ask()            # Get newly evolved individuals from NEAT  
@@ -248,6 +252,11 @@ def main(argv):
   fileName    = args.outPrefix
   hyp_default = args.default
   hyp_adjust  = args.hyperparam
+  
+  domain.custom.is_fewshot = args.fewshot
+  domain.custom.min_pendulum = args.min_pendulum
+  domain.custom.max_pendulum = args.max_pendulum
+  domain.custom.normal_pendulum = args.normal_pendulum
 
   hyp = loadHyp(pFileName=hyp_default)
   updateHyp(hyp,hyp_adjust)
@@ -257,6 +266,16 @@ def main(argv):
     master()
   else:
     slave()
+
+
+def str2bool(v):
+    if v.lower() in ('yes', 'true', 't', 'y', '1'):
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+
 
 if __name__ == "__main__":
   ''' Parse input and launch '''
@@ -274,8 +293,21 @@ if __name__ == "__main__":
   parser.add_argument('-n', '--num_worker', type=int,\
    help='number of cores to use', default=2)
 
+  parser.add_argument('-f', '--fewshot', type=str2bool,\
+   help='Fewshot?', default=False)
+
+  parser.add_argument('-j', '--min_pendulum', type=float,\
+   help='Minimum pendulum weight', default=0.25)
+  
+  parser.add_argument('-k', '--max_pendulum', type=float,\
+   help='Max pendulum weight', default=0.75)
+
+  parser.add_argument('-l', '--normal_pendulum', type=float,\
+   help='Normal pendulum weight', default=0.5)
+
   args = parser.parse_args()
 
+  
 
   # Use MPI if parallel
   if "parent" == mpi_fork(args.num_worker+1): os._exit(0)
