@@ -1,8 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 
+# argv 1: fewshot input, 2: normal input, 3: x_axis, 4: output file
 # import all data files
-data_files = ['results/32 gens/fewshot_results.txt', 'results/32 gens/normal_results.txt']
+data_files = [sys.argv[1], sys.argv[2]]
 labels = ["Fewshot", "Normal"]
 all_data = []
 for file in data_files:
@@ -16,7 +18,7 @@ for file in data_files:
         all_data.append(lines)
 
 # import x_axis
-x_axis_file = 'results/32 gens/seq.txt'
+x_axis_file = sys.argv[3]
 x_axis = []
 with open(x_axis_file) as f:
     lines = f.readlines()
@@ -34,4 +36,4 @@ plt.xlabel("Weight of pendulum")
 plt.ylabel("Score")
 plt.title("Fewshot vs normal learning")
 plt.legend(loc="lower right")
-plt.savefig("plots/Fewshot_normal_pendulum.pdf")
+plt.savefig(sys.argv[4])

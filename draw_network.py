@@ -78,4 +78,4 @@ def plot_matrix(filename):
     plt.savefig("plots/network.pdf")
 
 
-plot_matrix("weightagnostic_original/prettyNeatWann/champions/biped.out")
+plot_matrix("weightagnostic_original/prettyNeatWann/log/fewshot_best.out")
