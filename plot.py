@@ -1,10 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
+from pathlib import Path
+import os
 
 # argv 1: fewshot input, 2: normal input, 3: x_axis, 4: output file
 # import all data files
-data_files = [sys.argv[1], sys.argv[2]]
+folder = os.path.join(sys.argv[1], '')
+data_files = [folder + "fewshot_results.txt", folder + "normal_results.txt"]
 labels = ["Fewshot", "Normal"]
 all_data = []
 for file in data_files:
@@ -18,7 +21,7 @@ for file in data_files:
         all_data.append(lines)
 
 # import x_axis
-x_axis_file = sys.argv[3]
+x_axis_file = folder + "result_weigths.txt"
 x_axis = []
 with open(x_axis_file) as f:
     lines = f.readlines()
@@ -35,5 +38,7 @@ for i in range(len(all_data)):
 plt.xlabel("Weight of pendulum")
 plt.ylabel("Score")
 plt.title("Fewshot vs normal learning")
-plt.legend(loc="lower right")
-plt.savefig(sys.argv[4])
+plt.legend(loc="best")
+
+path = Path(folder)
+plt.savefig(folder + path.name + ".pdf")
