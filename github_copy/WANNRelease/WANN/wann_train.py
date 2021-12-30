@@ -20,6 +20,7 @@ from domain import *   # Task environments
 def master(): 
   """Main WANN optimization script
   """
+  cur_time = time.time()
   global fileName, hyp
   data = DataGatherer(fileName, hyp)
   wann = Wann(hyp)
@@ -37,6 +38,9 @@ def master():
   data.save()
   data.savePop(wann.pop,fileName)
   stopAllWorkers()
+
+  finished_time = time.time()
+  print("Time in sec:", finished_time-cur_time)
 
 def gatherData(data,wann,gen,hyp,savePop=False):
   """Collects run data, saves it to disk, and exports pickled population
