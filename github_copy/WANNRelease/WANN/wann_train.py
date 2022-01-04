@@ -35,11 +35,11 @@ def master():
     print(gen, '\t - \t', data.display())
 
     f=open("4096gens_absolute_time.txt", "a+")
-    f.write(str(time.time() + "\n"))
+    f.write(str(time.time()) + "\n")
     f.close()
 
     f=open("4096gens_time_since_start.txt", "a+")
-    f.write(str(start_time - time.time() + "\n"))
+    f.write(str(start_time - time.time()) + "\n")
     f.close()
 
   # Clean up and data gathering at end of run
