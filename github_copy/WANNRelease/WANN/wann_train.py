@@ -20,18 +20,27 @@ from domain import *   # Task environments
 def master(): 
   """Main WANN optimization script
   """
-  cur_time = time.time()
+  start_time = time.time()
   global fileName, hyp
   data = DataGatherer(fileName, hyp)
   wann = Wann(hyp)
 
-  for gen in range(hyp['maxGen']):        
+  for gen in range(hyp['maxGen']):  
+    start_gen_time = time.time()      
     pop = wann.ask()            # Get newly evolved individuals from WANN  
     reward = batchMpiEval(pop)  # Send pop to evaluate
     wann.tell(reward)           # Send fitness to WANN    
 
     data = gatherData(data,wann,gen,hyp)
     print(gen, '\t - \t', data.display())
+
+    f=open("4096gens_absolute_time.txt", "a+")
+    f.write(str(time.time()) + "\n")
+    f.close()
+
+    f=open("4096gens_time_since_start.txt", "a+")
+    f.write(str(start_time - time.time()) + "\n")
+    f.close()
 
   # Clean up and data gathering at end of run
   data = gatherData(data,wann,gen,hyp,savePop=True)
@@ -40,7 +49,7 @@ def master():
   stopAllWorkers()
 
   finished_time = time.time()
-  print("Time in sec:", finished_time-cur_time)
+  print("Time in sec:", finished_time-start_time)
 
 def gatherData(data,wann,gen,hyp,savePop=False):
   """Collects run data, saves it to disk, and exports pickled population
