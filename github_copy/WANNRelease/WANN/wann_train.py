@@ -5,7 +5,7 @@ import math
 import argparse
 import subprocess
 import numpy as np
-np.set_printoptions(precision=2, linewidth=160) 
+np.set_printoptions(precision=2, linewidth=160)
 
 # MPI
 from mpi4py import MPI
@@ -17,7 +17,7 @@ from domain import *   # Task environments
 
 
 # -- Run NE -------------------------------------------------------------- -- #
-def master(): 
+def master():
   """Main WANN optimization script
   """
   start_time = time.time()
@@ -25,21 +25,21 @@ def master():
   data = DataGatherer(fileName, hyp)
   wann = Wann(hyp)
 
-  for gen in range(hyp['maxGen']):  
-    start_gen_time = time.time()      
-    pop = wann.ask()            # Get newly evolved individuals from WANN  
+  for gen in range(hyp['maxGen']):
+    start_gen_time = time.time()
+    pop = wann.ask()            # Get newly evolved individuals from WANN
     reward = batchMpiEval(pop)  # Send pop to evaluate
-    wann.tell(reward)           # Send fitness to WANN    
+    wann.tell(reward)           # Send fitness to WANN
 
     data = gatherData(data,wann,gen,hyp)
     print(gen, '\t - \t', data.display())
 
-    f=open("4096gens_absolute_time.txt", "a+")
+    f=open(fileName+"_absolute_time.txt", "a+")
     f.write(str(time.time()) + "\n")
     f.close()
 
-    f=open("4096gens_time_since_start.txt", "a+")
-    f.write(str(start_time - time.time()) + "\n")
+    f=open(fileName+"_time_since_start.txt", "a+")
+    f.write(str(time.time() - start_time) + "\n")
     f.close()
 
   # Clean up and data gathering at end of run
@@ -57,7 +57,7 @@ def gatherData(data,wann,gen,hyp,savePop=False):
   Args:
     data       - (DataGatherer)  - collected run data
     wann       - (Wann)          - neat algorithm container
-      .pop     - (Ind)           - list of individuals in population    
+      .pop     - (Ind)           - list of individuals in population
       .species - (Species)       - current species
     gen        - (int)           - current generation
     hyp        - (dict)          - algorithm hyperparameters
@@ -72,7 +72,7 @@ def gatherData(data,wann,gen,hyp,savePop=False):
     data = checkBest(data)
     data.save(gen)
 
-  if savePop is True: # Get a sample pop to play with in notebooks    
+  if savePop is True: # Get a sample pop to play with in notebooks
     global fileName
     pref = 'log/' + fileName
     import pickle
@@ -101,7 +101,7 @@ def checkBest(data):
     rep = np.tile(data.best[-1], bestReps)
     fitVector = batchMpiEval(rep, sameSeedForEachIndividual=False)
     trueFit = np.mean(fitVector)
-    if trueFit > data.best[-2].fitness:  # Actually better!      
+    if trueFit > data.best[-2].fitness:  # Actually better!
       data.best[-1].fitness = trueFit
       data.fit_top[-1]      = trueFit
       data.bestFitVec = fitVector
@@ -120,11 +120,11 @@ def batchMpiEval(pop, sameSeedForEachIndividual=True):
   Args:
     pop - [Ind] - list of individuals
       .wMat - (np_array) - weight matrix of network
-              [N X N] 
+              [N X N]
       .aVec - (np_array) - activation function of each node
               [N X 1]
 
-  
+
   Optional:
       sameSeedForEachIndividual - (bool) - use same seed for each individual?
 
@@ -134,7 +134,7 @@ def batchMpiEval(pop, sameSeedForEachIndividual=True):
 
   Todo:
     * Asynchronous evaluation instead of batches
-  """  
+  """
   global nWorker, hyp
   nSlave = nWorker-1
   nJobs = len(pop)
@@ -163,13 +163,13 @@ def batchMpiEval(pop, sameSeedForEachIndividual=True):
         if sameSeedForEachIndividual is False:
           comm.send(seed.item(i), dest=(iWork)+1, tag=5)
         else:
-          comm.send(  seed, dest=(iWork)+1, tag=5)        
+          comm.send(  seed, dest=(iWork)+1, tag=5)
 
       else: # message size of 0 is signal to shutdown workers
         n_wVec = 0
         comm.send(n_wVec,  dest=(iWork)+1)
-      i = i+1 
-  
+      i = i+1
+
     # Get fitness values back for that batch
     i -= nSlave
     for iWork in range(1,nSlave+1):
@@ -181,21 +181,21 @@ def batchMpiEval(pop, sameSeedForEachIndividual=True):
   return reward
 
 def slave():
-  """Evaluation process: evaluates networks sent from master process. 
+  """Evaluation process: evaluates networks sent from master process.
 
   PseudoArgs (recieved from master):
     wVec   - (np_array) - weight matrix as a flattened vector
              [1 X N**2]
     n_wVec - (int)      - length of weight vector (N**2)
-    aVec   - (np_array) - activation function of each node 
+    aVec   - (np_array) - activation function of each node
              [1 X N]    - stored as ints, see applyAct in ann.py
     n_aVec - (int)      - length of activation vector (N)
     seed   - (int)      - random seed (for consistency across workers)
 
   PseudoReturn (sent to master):
     result - (float)    - fitness value of network
-  """  
-  global hyp  
+  """
+  global hyp
   task = Task(games[hyp['task']], nReps=hyp['alg_nReps'])
 
   # Evaluate any weight vectors sent this way
@@ -243,7 +243,7 @@ def mpi_fork(n):
       IN_MPI="1"
     )
     print( ["mpirun", "-np", str(n), sys.executable] + sys.argv)
-    subprocess.check_call(["mpirun", "-np", str(n), sys.executable] +['-u']+ sys.argv, env=env)
+    subprocess.check_call(["mpirun", "--use-hwthread-cpus", "-np", str(n), sys.executable] +['-u']+ sys.argv, env=env)
     return "parent"
   else:
     global nWorker, rank
@@ -276,7 +276,7 @@ def main(argv):
 if __name__ == "__main__":
   ''' Parse input and launch '''
   parser = argparse.ArgumentParser(description=('Evolve NEAT networks'))
-  
+
   parser.add_argument('-d', '--default', type=str,\
    help='default hyperparameter file', default='p/default_wan.json')
 
@@ -285,18 +285,18 @@ if __name__ == "__main__":
 
   parser.add_argument('-o', '--outPrefix', type=str,\
    help='file name for result output', default='test')
-  
+
   parser.add_argument('-n', '--num_worker', type=int,\
    help='number of cores to use', default=8)
 
   args = parser.parse_args()
-
+  import mnist
+  temp = mnist.train_images()
 
   # Use MPI if parallel
   if "parent" == mpi_fork(args.num_worker+1): os._exit(0)
 
-  main(args)                              
-  
+  main(args)
 
 
 

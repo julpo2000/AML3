@@ -1,0 +1,59 @@
+--------------------------------------------------------------------------
+By default, for Open MPI 4.0 and later, infiniband ports on a device
+are not used by default.  The intent is to use UCX for these devices.
+You can override this policy by setting the btl_openib_allow_ib MCA parameter
+to true.
+
+  Local host:              node005
+  Local adapter:           mlx5_0
+  Local port:              1
+
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   node005
+  Local device: mlx5_0
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+By default, for Open MPI 4.0 and later, infiniband ports on a device
+are not used by default.  The intent is to use UCX for these devices.
+You can override this policy by setting the btl_openib_allow_ib MCA parameter
+to true.
+
+  Local host:              node005
+  Local adapter:           mlx5_0
+  Local port:              1
+
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+WARNING: There was an error initializing an OpenFabrics device.
+
+  Local host:   node005
+  Local device: mlx5_0
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+A system call failed during shared memory initialization that should
+not have.  It is likely that your MPI job will now either abort or
+experience performance degradation.
+
+  Local host:  node005
+  System call: open(2) 
+  Error:       Permission denied (errno 13)
+--------------------------------------------------------------------------
+[node005:29410] 23 more processes have sent help message help-mpi-btl-openib.txt / ib port not selected
+[node005:29410] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages
+[node005:29410] 23 more processes have sent help message help-mpi-btl-openib.txt / error in device init
+[node005:29410] 7 more processes have sent help message help-opal-shmem-mmap.txt / sys call fail
+/home/s2225387/AML3/github_copy/WANNRelease/WANN/domain/classify_gym.py:65: RuntimeWarning: divide by zero encountered in log
+  log_likelihood = -np.log(action[range(m),y])
+/home/s2225387/AML3/github_copy/WANNRelease/WANN/domain/classify_gym.py:65: RuntimeWarning: divide by zero encountered in log
+  log_likelihood = -np.log(action[range(m),y])
+/home/s2225387/AML3/github_copy/WANNRelease/WANN/domain/classify_gym.py:65: RuntimeWarning: divide by zero encountered in log
+  log_likelihood = -np.log(action[range(m),y])
+/home/s2225387/AML3/github_copy/WANNRelease/WANN/domain/classify_gym.py:65: RuntimeWarning: divide by zero encountered in log
+  log_likelihood = -np.log(action[range(m),y])
+
+real	5344m36.386s
+user	22691m43.559s
+sys	20060m40.487s
