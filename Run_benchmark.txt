@@ -1,6 +1,0 @@
-Time 4096 gens and write to file
-{ time python3 wann_train.py -p p/mnist256.json -o "4096gens" -n 8 ;} > 4096gens.txt 2>&1
-
-Huisuil login:
-ssh sXXXXXXX@sshgw.leidenuniv.nl
-ssh remotelx.liacs.leidenuniv.nl
