@@ -4,6 +4,8 @@ Game = namedtuple('Game', ['env_name', 'input_size', 'output_size', 'wann_file',
 
 games = {}
 
+filename="mnist_3840.out"
+
 cartpole_swingup = Game(env_name='CartPoleSwingUp',
   input_size=5,
   output_size=1,
@@ -43,7 +45,7 @@ games['vae_racing'] = vae_racing
 mnist256 = Game(env_name='MNIST256-v0',
   input_size=256,
   output_size=10,
-  wann_file='mnist.out',
+  wann_file=filename,
   action_select='softmax', # all, soft, hard
   weight_bias=0.0,
 )
@@ -53,7 +55,7 @@ games['mnist256'] = mnist256
 mnist256test = Game(env_name='MNISTTEST256-v0',
   input_size=256,
   output_size=10,
-  wann_file='mnist.out',
+  wann_file=filename,
   action_select='softmax', # all, soft, hard
   weight_bias=0.0,
 )
@@ -63,7 +65,7 @@ games['mnist256test'] = mnist256test
 mnist256train = Game(env_name='MNISTTRAIN256-v0',
   input_size=256,
   output_size=10,
-  wann_file='mnist.out',
+  wann_file=filename,
   action_select='softmax', # all, soft, hard
   weight_bias=0.0,
 )
