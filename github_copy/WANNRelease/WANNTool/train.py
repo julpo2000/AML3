@@ -65,8 +65,8 @@ RESULT_PACKET_SIZE = 4*num_worker_trial
 def initialize_settings(sigma_init=0.1, sigma_decay=0.9999):
   global population, filebase, game, model, num_params, es, PRECISION, SOLUTION_PACKET_SIZE, RESULT_PACKET_SIZE
   population = num_worker * num_worker_trial
-  filebase = 'log/'+gamename+'.'+optimizer+'.'+str(num_episode)+'.'+str(population)
   game = config.games[gamename]
+  filebase = 'log/'+gamename+'.'+optimizer+'.'+str(num_episode)+'.'+str(population)+'.'+str(game.wann_file)
   model = make_model(game)
   num_params = model.param_count
   print("size of model", num_params)
@@ -300,7 +300,7 @@ def master():
 
   max_len = -1 # max time steps (-1 means ignore)
 
-  while True:
+  while t < 1001:
     t += 1
 
     solutions = es.ask()
