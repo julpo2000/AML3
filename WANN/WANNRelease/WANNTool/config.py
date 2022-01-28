@@ -4,7 +4,7 @@ Game = namedtuple('Game', ['env_name', 'input_size', 'output_size', 'wann_file',
 
 games = {}
 
-filename="mnist_3840.out"
+filename="mnist_4088.out"
 
 cartpole_swingup = Game(env_name='CartPoleSwingUp',
   input_size=5,
